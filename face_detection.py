@@ -13,7 +13,6 @@ class MPFaceDetection:
             self,
             model_selection: bool = 1,
             confidence: float = 0.5,
-            mp_drawing_utils: bool = True,
             color: typing.Tuple[int, int, int] = (255, 255, 255),
             thickness: int = 2,
     ) -> None:
@@ -21,11 +20,9 @@ class MPFaceDetection:
         Args:
             model_selection: (bool) - 1 - for low distance, 0 - for far distance face detectors.
             confidence: (float) - confidence for face detector, when detection are confirmed, range (0.0-1.0).
-            mp_drawing_utils: (bool) - bool option whether to use mp_drawing utils or or own, Default to True.
             color: (typing.Tuple[int, int, int]) - Color for drawing the annotation. Default to the white color.
             thickness: (int) - Thickness for drawing the annotation. Default to 2 pixels.
         """
-        self.mp_drawing_utils = mp_drawing_utils
         self.color = color
         self.thickness = thickness
         self.mp_drawing = mp.solutions.drawing_utils
@@ -73,11 +70,6 @@ class MPFaceDetection:
         if results.detections:
             if return_tlbr:
                 return self.tlbr(frame, results.detections)
-
-            if self.mp_drawing_utils:
-                # Draw face detections of each face using media pipe drawing utils.
-                for detection in results.detections:
-                    self.mp_drawing.draw_detection(frame, detection)
 
             else:
                 # Draw face detections of each face using our own tlbr and cv2.rectangle
